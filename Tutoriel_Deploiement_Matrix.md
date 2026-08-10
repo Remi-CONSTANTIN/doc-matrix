@@ -39,6 +39,20 @@ Dans l'interface de votre box internet, redirigez les ports suivants vers **l'ad
 *   `3479` (UDP) & **5350** (TCP) : Négociation STUN/TURN.
 *   `30000` à `30020` (UDP) : Plage pour la transmission directe de l'audio et de la vidéo.
 
+### 4. Contournement du blocage réseau local (Hairpin NAT)
+
+Si vous hébergez votre serveur chez vous derrière une box internet grand public, la box détruira les requêtes de vos conteneurs (LiveKit) tentant de s'authentifier via votre propre IP publique (Erreur OPEN_ID_ERROR / Timeout).
+Pour forcer le serveur à traiter ces requêtes en interne sans passer par la box :
+
+Attribuez virtuellement votre IP publique à la boucle locale de votre serveur (remplacez 82.67.x.x par votre VRAIE IP publique) :
+```
+ip addr add 82.67.x.x/32 dev lo
+```
+Rendez cette modification permanente après chaque redémarrage de la machine avec une tâche planifiée (cron) :
+```
+(crontab -l 2>/dev/null; echo "@reboot /sbin/ip addr add 82.67.x.x/32 dev lo") | crontab -
+```
+
 ---
 
 ## Phase 2 : Préparation du serveur Debian
