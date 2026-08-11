@@ -5,9 +5,12 @@ Ce guide permet de déployer un serveur Matrix complet sur une machine Debian en
 *   **Element Web** : L'interface web de messagerie
 *   **Ketesa** : L'interface graphique d'administration (utilisateurs, salons, fédération etc...)
 *   **LiveKit** : Le serveur de visioconférence WebRTC (Element Call)
-<br><br>
+
+# Disclaimer
+Tutoriel rédigé à l'aide de Gemini puis revu et corrigé par moi-même
 
 ---
+<br><br>
 
 ## Phase 1 : Préparation du Réseau et des DNS (L'étape cruciale)
 
@@ -54,6 +57,7 @@ Rendez cette modification permanente après chaque redémarrage de la machine av
 ```
 
 ---
+<br><br>
 
 ## Phase 2 : Préparation du serveur Debian
 
@@ -81,6 +85,7 @@ Connectez-vous en `root` sur votre machine Debian.
     ```
 
 ---
+<br><br>
 
 ## Phase 3 : Le fichier de configuration (`vars.yml`)
 
@@ -119,6 +124,7 @@ matrix_static_files_container_labels_base_domain_enabled: true
 ```
 
 ---
+<br><br>
 
 ## Phase 4 : Installation et Déploiement
 
@@ -133,9 +139,9 @@ Lancement du déploiement général :
 ansible-playbook -i inventory/hosts setup.yml --tags=setup-all,start
 ```
 (Laissez tourner, le script télécharge les images Docker, configure Traefik, génère les certificats et lance les services. Cela prend plusieurs minutes et dépendra de votre connexion internet)
-<br><br>
 
 ---
+<br><br>
 
 ## Phase 5 : Création de l'Administrateur & Verrouillage
 
@@ -162,8 +168,63 @@ ansible-playbook -i inventory/hosts setup.yml --tags=setup-synapse,start
 ```
 
 ---
+<br><br>
 
-## Phase 6 : Accès et Utilisation
+## Phase 6 : (Optionnel) Sécuriser l'accès à l'administration par IP
+
+Par défaut, l'interface d'administration Ketesa (/synapse-admin/) est accessible publiquement avec identifiant/mot de passe. Pour bloquer l'accès à toute personne extérieure et restreindre cette page à vos seules adresses IP de confiance (votre box, votre VPN, votre réseau local) :
+
+1. Ouvrez le fichier de configuration de Traefik :
+```
+nano /matrix/traefik/config/provider.yml
+```
+
+2. Remplacez l'intégralité du contenu par ce bloc (adaptez les adresses IP dans sourceRange) :
+```
+http:
+  middlewares:
+    compression:
+      compress:
+        encodings: zstd,br,gzip
+        minResponseBodyBytes: 1024
+    ketesa-ip-guard:
+      ipAllowList:
+        sourceRange:
+          - "82.15.86.153"       # Votre IP publique fixe
+          - "10.0.0.0/8"         # Exemple Réseau local 1
+          - "192.168.0.0/16"     # Exemple Réseau local 2
+          - "172.16.0.0/12"      # Exemple Réseau local 3
+
+  routers:
+    ketesa-secure-override:
+      rule: "Host(`matrix.votre-domaine.fr`) && PathPrefix(`/synapse-admin`)"
+      entryPoints:
+        - "web-secure"
+      service: "matrix-ketesa@docker"
+      tls: {}
+      priority: 1000
+      middlewares:
+        - "ketesa-ip-guard"
+        - "matrix-ketesa-slashless-redirect@docker"
+        - "matrix-ketesa-strip-prefix@docker"
+        - "matrix-ketesa-add-headers@docker"
+
+tcp:
+  serversTransports:
+    proxy:
+      proxyProtocol:
+        version: 1
+```
+
+3. Redémarrez Traefik pour appliquer la restriction immédiatement :
+```
+docker restart matrix-traefik
+```
+
+---
+<br><br>
+
+## Phase 7 : Accès et Utilisation
 
 Votre infrastructure est opérationnelle. Les certificats HTTPS sont gérés automatiquement par Traefik.
 
