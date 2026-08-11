@@ -233,3 +233,11 @@ Votre infrastructure est opérationnelle. Les certificats HTTPS sont gérés aut
 ⚙️ Pour administrer (Ketesa) : Allez sur https://matrix.votre-domaine.fr/synapse-admin/ pour ajouter vos amis, modifier des mots de passe ou gérer vos salons graphiquement. (Note : L'URL du "Homeserver" à renseigner lors du login est https://matrix.votre-domaine.fr).
 
 📞 Pour les appels vidéo : Ils fonctionnent nativement dans les salons. Pour trouver un ami et démarrer une conversation, utilisez son identifiant complet (ex: @jean:votre-domaine.fr).
+
+---
+<br><br>
+
+## Phase 8 : (Fortement conseillée) Sécurisation de la machine
+- Placer cette machine dans la DMZ (grand minimum)
+- Déployer crowdsec sur la machine pour profiter des listes noirs d'IP publiques
+- Restreindre les risques de déplacement latéraux sur le réseau local à l'aide d'un pare-feux local comme Proxmox firewall (UFW n'est pas conseillé car, par défaut, docker bypass ses règles) dans le cas d'une infection de la machine
