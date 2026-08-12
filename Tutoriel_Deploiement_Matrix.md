@@ -7,7 +7,7 @@ Ce guide permet de déployer un serveur Matrix complet sur une machine Debian en
 *   **LiveKit** : Le serveur de visioconférence WebRTC (Element Call)
 
 # Disclaimer
-Tutoriel rédigé à l'aide de Gemini puis revu et corrigé par moi-même
+Tutoriel rédigé à l'aide de Gemini puis revu et corrigé par un collectif d'individus de type humain
 
 ---
 <br><br>
