@@ -9,6 +9,9 @@ Ce guide permet de déployer un serveur Matrix complet sur une machine Debian en
 # Disclaimer
 Tutoriel rédigé à l'aide de Gemini puis revu + testé + corrigé par Rémi CONSTANTIN
 
+# Sources
+[Dépôt Matrix officiel Ansible](https://github.com/spantaleev/matrix-docker-ansible-deploy)
+
 ---
 <br><br>
 
