@@ -10,7 +10,7 @@ Utile dans le cas où vous souhaiteriez limiter la fédération aux instances de
 Dans mon cas : `cd /opt/matrix-docker-ansible-deploy`
 
 2. Entrez dans votre fichier de configuration  
-`nano inventory/host_vars/matrix.tadaron.fr/vars.yml`  
+`nano inventory/host_vars/matrix.votredomaine.com/vars.yml`  
 
 3. Ajoutez la variable, votre domaine et le(s) potentiel(s) domaine(s) approuvé(s)
 ```
