@@ -24,3 +24,9 @@ matrix_synapse_federation_domain_whitelist:
 `ansible-playbook -i inventory/hosts setup.yml --tags=setup-all,start`
 
 Si vous avez décidé d'approuver `matrix.org`, vous pouvez tester la fédération avec l'outil officiel : [Matrix Federation Tester](https://federationtester.matrix.org/)
+
+---
+
+# Sources
+[Documentation Github officielle Matrix Ansible](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-playbook-federation.md)
+[Issue N°4857 Synapse](https://github.com/matrix-org/synapse/issues/4857)
