@@ -32,3 +32,9 @@ Dans cet exemple, le nettoyage sera déclenché entre `14:00` et `14:30` grâce 
 ## 3. Application des changements
 Pour appliquer les changements, c'est toujours la même chose  
 `ansible-playbook -i inventory/hosts setup.yml --tags=setup-all,start`
+
+---
+
+# Sources
+[Media Retention](https://element-hq.github.io/synapse/latest/usage/configuration/config_documentation.html?highlight=media_reten#media_retention)
+[synapse-auto-compressor](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-playbook-synapse-auto-compressor.md)
