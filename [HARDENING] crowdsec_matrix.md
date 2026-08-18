@@ -22,7 +22,7 @@ chmod -R 777 /matrix/traefik/logs
 2. Configurer vars.yml
 Ouvrez le fichier de configuration Ansible :
 ```
-nano /opt/matrix-docker-ansible-deploy/inventory/host_vars/matrix.tadaron.fr/vars.yml
+nano /opt/matrix-docker-ansible-deploy/inventory/host_vars/matrix.votredomaine.com/vars.yml
 ```
 
 Ajoutez ces variables à la fin du fichier :
@@ -45,7 +45,7 @@ LC_ALL=C.UTF-8 ansible-playbook -i inventory/hosts setup.yml --tags=setup-traefi
 
 4. Vérifier la génération des logs
 
-Générez du trafic en ouvrant [https://element.tadaron.fr](https://element.tadaron.fr) dans votre navigateur, puis vérifiez sur le serveur :
+Générez du trafic en ouvrant [https://element.votredomaine.com](https://element.votredomaine.com) dans votre navigateur, puis vérifiez sur le serveur :
 ```
 tail -f /matrix/traefik/logs/access.log
 ```
@@ -145,7 +145,7 @@ Bannissez temporairement cette IP :
 cscli decisions add --ip VOTRE_IP_TEST --duration 5m --reason "Test manuel"
 ```
 
-Essayez d'accéder à [https://element.tadaron.fr](https://element.tadaron.fr) depuis le smartphone : la connexion doit immédiatement tomber en Timeout / Échec de connexion.
+Essayez d'accéder à [https://element.votredomaine.com](https://element.votredomaine.com) depuis le smartphone : la connexion doit immédiatement tomber en Timeout / Échec de connexion.
 
 Débannissez l'IP :
 ```
@@ -156,7 +156,7 @@ B. Test d'attaque automatisée (Scan de vulnérabilités)
 
 Depuis une machine distante (ou votre PC en partage de connexion 4G, jamais depuis le serveur) :
 ```
-for i in {1..20}; do curl -s -o /dev/null -w "%{http_code}\n" "https://element.tadaron.fr/test-faille-$i.php"; done
+for i in {1..20}; do curl -s -o /dev/null -w "%{http_code}\n" "https://element.votredomaine.com/test-faille-$i.php"; done
 ```
 
 Sur le serveur :
