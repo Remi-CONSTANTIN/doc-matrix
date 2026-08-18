@@ -42,8 +42,8 @@ Dans l'interface de votre box internet, redirigez les ports suivants vers **l'ad
 
 **Ports LiveKit (Visioconférence) :**
 *   `7881` (TCP) & **7882** (UDP) : Gestion des flux WebRTC.
-*   `3479` (UDP) & **5350** (TCP) : Négociation STUN/TURN.
-*   `30000` à `30020` (UDP) : Plage pour la transmission directe de l'audio et de la vidéo.
+*   `3478` (UDP) & **5349** (TCP) : Négociation STUN/TURN.
+*   `35000` à `35020` (UDP) : Plage pour la transmission directe de l'audio et de la vidéo.
 
 ### 4. Contournement du blocage réseau local (Hairpin NAT)
 
@@ -106,24 +106,28 @@ matrix_domain: votre-domaine.fr
 matrix_playbook_reverse_proxy_type: playbook-managed-traefik
 
 # --- 2. SÉCURITÉ ---
-# Générez des mots de passe complexes et uniques pour ces deux variables
 matrix_homeserver_generic_secret_key: "UNE_CLE_TRES_LONGUE_ET_SECRETE"
 postgres_connection_password: "UN_MOT_DE_PASSE_BDD_COMPLEXE"
 
 # --- 3. VALIDATION DE L'INSTALLATION ---
 matrix_playbook_migration_validated_version: "v2026.05.18.0"
 
-# --- 4. INSCRIPTIONS (Ouverture temporaire pour la création du 1er compte) ---
+# --- 4. INSCRIPTIONS ---
+# Ouverture temporaire pour la création du 1er compte
 matrix_synapse_enable_registration: true
 matrix_synapse_enable_registration_without_verification: true
 
-# --- 5. INTERFACE D'ADMINISTRATION GRAPHIQUE ---
+# --- 5. INTERFACES ---
 matrix_ketesa_enabled: true
 
-# --- 6. VISIOCONFÉRENCE (LiveKit) & DÉLÉGATION ---
+# --- 6. VISIOCONFÉRENCE (LiveKit & Coturn) ---
 matrix_rtc_enabled: true
-# Indispensable pour éviter l'erreur OPEN_ID_ERROR lors des appels (gère le /.well-known/)
 matrix_static_files_container_labels_base_domain_enabled: true
+
+coturn_enabled: true
+coturn_turn_external_ip_address: "VOTRE_IP_PUBLIQUE_ICI"
+coturn_turn_udp_min_port: 35000
+coturn_turn_udp_max_port: 35020
 ```
 
 ---
@@ -241,6 +245,7 @@ Votre infrastructure est opérationnelle. Les certificats HTTPS sont gérés aut
 <br><br>
 
 ## Phase 8 : (Fortement conseillée) Sécurisation de la machine
+Il est conseillé, dès que vous avez déployé votre instance Matrix, de passer à un hardening sérieux afin de réduire au maximum les chances de compromissions. Voici quelques exemples : 
 - Placer cette machine dans la DMZ (grand minimum)
-- Déployer crowdsec sur la machine pour profiter des listes noirs d'IP publiques
+- Déployer crowdsec sur la machine pour profiter des listes noirs d'IP publiques (Voir [ICI](https://github.com/Remi-CONSTANTIN/doc-matrix/blob/main/%5BHARDENING%5D%20crowdsec_matrix.md) si beosin d'aide)
 - Restreindre les risques de déplacement latéraux sur le réseau local à l'aide d'un pare-feux local comme Proxmox firewall (UFW n'est pas conseillé car, par défaut, docker bypass ses règles) dans le cas d'une infection de la machine
