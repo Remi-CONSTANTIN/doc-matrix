@@ -1,7 +1,6 @@
 # Guide de Sécurisation : Protéger une Stack Matrix / Docker avec CrowdSec
 
 Ce guide détaille la mise en place de CrowdSec sur un hôte Debian pour surveiller, détecter et bloquer en temps réel les attaques dirigées contre votre infrastructure Matrix auto-hébergée sous Docker (Traefik, Synapse, Element, LiveKit).
-Architecture & Principe de Fonctionnement
 
 # Disclaimer
 Tutoriel rédigé à l'aide de Gemini puis revu + testé + corrigé par Rémi CONSTANTIN
