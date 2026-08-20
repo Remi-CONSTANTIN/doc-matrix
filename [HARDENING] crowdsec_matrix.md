@@ -7,6 +7,31 @@ Tutoriel rédigé à l'aide de Gemini puis revu + testé + corrigé par Rémi CO
 
 ---
 
+# Mise en place
+
+## Étape 0 : Installation Crowdsec
+
+1. Installer le dépôt CrowdSec sur la machine à protéger
+```
+curl -s https://install.crowdsec.net | sudo sh
+```
+
+2. Installer CrowdSec
+```
+apt install crowdsec
+```
+
+3. Si vous aviez déjà des services sur la machine lors de l'installation de CrowdSec, alors il est possible que des collections aient automatiquement été téléchargées.
+Pour vérifier cela : 
+```
+sudo cscli collections list
+```
+
+4. Pour finir l'installation , je vous recommande vivement d'installer tout de suite le "Bouncer" iptables afin que CrowdSec puisse bannir automatiquement s'il détecte une activité suspecte
+```
+sudo apt install crowdsec-firewall-bouncer-iptables -y
+```
+
 ## Étape 1 : Activation des logs d'accès Traefik via Ansible
 
 Pour que CrowdSec puisse analyser le trafic HTTP(S), Traefik doit consigner chaque requête dans un fichier de log accessible sur l'hôte.
@@ -162,3 +187,6 @@ Sur le serveur :
 **Vérifiez l'alerte générée** : `cscli alerts list`
 **Vérifiez le ban automatique** : `cscli decisions list`
 **Débannissez votre machine de test une fois validé** : `cscli decisions delete --ip <IP>`
+
+## Piste d'amélioration
+Ajouter cette machine au dashboard Crowdsec Web officiel
