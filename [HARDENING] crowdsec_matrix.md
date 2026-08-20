@@ -27,7 +27,12 @@ Pour vérifier cela :
 sudo cscli collections list
 ```
 
-4. Pour finir l'installation , je vous recommande vivement d'installer tout de suite le "Bouncer" iptables afin que CrowdSec puisse bannir automatiquement s'il détecte une activité suspecte
+4. Ajoutons une collection contre les scans de port
+```
+cscli collections install crowdsecurity/iptables
+```
+
+5. Pour finir l'installation , je vous recommande vivement d'installer tout de suite le "Bouncer" iptables afin que CrowdSec puisse bannir automatiquement s'il détecte une activité suspecte
 ```
 sudo apt install crowdsec-firewall-bouncer-iptables -y
 ```
